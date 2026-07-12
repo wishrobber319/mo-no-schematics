@@ -8,6 +8,6 @@
 <Manifest>
     <identifier>Medieval Overhaul - No Schematics</identifier>
     <version>1.0.0</version>
-    <manifestUri>https://raw.githubusercontent.com/wishrobber319/mo-no-schematics/main/About/Manifest.xml</manifestUri>
+    <manifestUri>https://github.com/wishrobber319/mo-no-schematics/releases/latest/download/Manifest.xml</manifestUri>
     <downloadUri>https://steamcommunity.com/sharedfiles/filedetails/?id=3763130901</downloadUri>
 </Manifest>
