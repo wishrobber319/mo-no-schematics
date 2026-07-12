@@ -112,9 +112,13 @@ jobs:
 
       - name: Upload to Steam Workshop
         run: |
+          set +e
           out="$("$HOME/steamcmd/steamcmd.sh" +login "${{ secrets.STEAM_USERNAME }}" \
                  +workshop_build_item "$PWD/item.vdf" +quit 2>&1)"
+          rc=$?
+          set -e
           echo "$out"
+          echo "steamcmd exit code: $rc"
           echo "$out" | grep -q "Success." || { echo "::error::Workshop upload failed (see log above)"; exit 1; }
 
       - name: Tag + GitHub Release (with stamped Manifest asset)
