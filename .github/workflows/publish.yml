@@ -92,12 +92,17 @@ jobs:
           )"
           DESC="$(printf '%s' "$DESC" | sed 's/\\/\//g; s/"/'"'"'/g')"
 
+          # Workshop thumbnail (only if the mod has one).
+          PREVIEW=""
+          [ -f About/Preview.png ] && PREVIEW="$PWD/About/Preview.png"
+
           {
             echo '"workshopitem"'
             echo '{'
             echo '  "appid" "294100"'
             echo "  \"publishedfileid\" \"$ITEMID\""
             echo "  \"contentfolder\" \"$PWD/dist\""
+            [ -n "$PREVIEW" ] && printf '  "previewfile" "%s"\n' "$PREVIEW"
             printf '  "changenote" "%s"\n' "$NOTE"
             printf '  "description" "%s"\n' "$DESC"
             echo '}'
