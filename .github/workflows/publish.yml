@@ -12,6 +12,7 @@ on:
       - 'README.md'
       - '.gitignore'
       - '.github/**'
+      - 'Media/**'
   workflow_dispatch:
 
 permissions:
@@ -71,7 +72,7 @@ jobs:
       - name: Stage, stamp Manifest, build VDF
         run: |
           mkdir -p dist
-          rsync -a --exclude Source --exclude .git --exclude .github \
+          rsync -a --exclude Source --exclude .git --exclude .github --exclude Media \
                 --exclude README.md --exclude .gitignore --exclude dist --exclude note.txt ./ dist/
           if [ -f dist/About/Manifest.xml ]; then
             sed -i -E "s#<version>[^<]*</version>#<version>${{ steps.cn.outputs.version }}</version>#" dist/About/Manifest.xml
