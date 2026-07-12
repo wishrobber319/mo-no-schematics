@@ -1,18 +1,19 @@
 name: Publish to Steam Workshop
 
-# Publishes an update to the mod's existing Workshop item on every push to main.
-# Auth uses a cached SteamCMD session (config.vdf) stored as a secret, so no password
-# or 2FA seed lives in GitHub. See the repo notes for how the two secrets are created:
+# Version-driven publishing: push a tag like v1.0.1 to release, and the tag becomes the Workshop
+# change-note (so the Change Notes tab reads as a clean version history). Also runnable by hand.
+# Auth uses a cached SteamCMD session (config.vdf) stored as a secret - no password / 2FA seed.
 #   STEAM_CONFIG_VDF  - base64 of your local ~/Steam/config/config.vdf after logging in once
-#   STEAM_USERNAME    - your Steam account name (e.g. fibrewire)
+#   STEAM_USERNAME    - your Steam account name
 on:
   push:
-    branches: [main]
-    paths-ignore:
-      - 'README.md'
-      - '.gitignore'
-      - '.github/**'
+    tags: ['v*']
   workflow_dispatch:
+    inputs:
+      changenote:
+        description: 'Workshop change note'
+        required: false
+        default: 'Manual update'
 
 concurrency:
   group: workshop-publish
@@ -22,7 +23,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Install SteamCMD
         run: |
@@ -40,9 +41,18 @@ jobs:
 
       - name: Stage mod and build VDF
         run: |
+          if [ "$GITHUB_REF_TYPE" = "tag" ]; then
+            NOTE="$GITHUB_REF_NAME"
+          else
+            NOTE="${{ github.event.inputs.changenote }}"
+            [ -n "$NOTE" ] || NOTE="Manual update"
+          fi
+          echo "Change note: $NOTE"
+
           mkdir -p dist
           rsync -a --exclude Source --exclude .git --exclude .github \
                 --exclude README.md --exclude .gitignore --exclude dist ./ dist/
+
           ITEMID="$(tr -d '[:space:]' < About/PublishedFileId.txt)"
           {
             echo '"workshopitem"'
@@ -50,10 +60,10 @@ jobs:
             echo '  "appid" "294100"'
             echo "  \"publishedfileid\" \"$ITEMID\""
             echo "  \"contentfolder\" \"$PWD/dist\""
-            echo "  \"changenote\" \"CI build ${GITHUB_SHA::7}\""
+            echo "  \"changenote\" \"$NOTE\""
             echo '}'
           } > item.vdf
-          echo "Publishing Workshop item $ITEMID"
+          echo "Publishing item $ITEMID"
           cat item.vdf
 
       - name: Upload to Steam Workshop
@@ -61,5 +71,4 @@ jobs:
           out="$("$HOME/steamcmd/steamcmd.sh" +login "${{ secrets.STEAM_USERNAME }}" \
                  +workshop_build_item "$PWD/item.vdf" +quit 2>&1)"
           echo "$out"
-          # SteamCMD often exits 0 even on failure, so verify explicitly.
           echo "$out" | grep -q "Success." || { echo "::error::Workshop upload failed (see log above)"; exit 1; }

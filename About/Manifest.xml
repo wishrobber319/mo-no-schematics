@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Fluffy's Mod Manager manifest: shows the version in the in-game mod list and lets Mod Manager
+  notify subscribers when a newer version is available. Keep <version> in sync with your release
+  tags (bump this, then tag v<version>). manifestUri points at this file on the default branch so
+  Mod Manager can compare; downloadUri points at the Workshop item.
+-->
+<Manifest>
+    <identifier>Medieval Overhaul - No Schematics</identifier>
+    <version>1.0.0</version>
+    <manifestUri>https://raw.githubusercontent.com/wishrobber319/mo-no-schematics/main/About/Manifest.xml</manifestUri>
+    <downloadUri>https://steamcommunity.com/sharedfiles/filedetails/?id=3763130901</downloadUri>
+</Manifest>
