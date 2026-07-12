@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+
+	<!-- Only run when Medieval Overhaul is present. -->
+	<Operation Class="PatchOperationFindMod">
+		<mods>
+			<li>Medieval Overhaul</li>
+		</mods>
+		<match Class="PatchOperationSequence">
+			<operations>
+
+				<!-- 1) Ungate the research: strip the RequiredSchematic modExtension from every
+				        research project that has one. This removes both the gate and the
+				        "Required Schematic: ..." tooltip line. -->
+				<li Class="PatchOperationRemove">
+					<xpath>/Defs/ResearchProjectDef/modExtensions/li[@Class="MedievalOverhaul.RequiredSchematic"]</xpath>
+				</li>
+
+				<!-- 2) Strip every list reference to the schematic ThingDefs (loot tables,
+				        storage filters, Biotech/Odyssey loot patches, etc.) so removing the
+				        defs in step 3 leaves no dangling cross-references. Matches anywhere. -->
+				<li Class="PatchOperationRemove">
+					<xpath>/Defs//li[text()="DankPyon_Schematic_MilitaryBlades" or text()="DankPyon_Schematic_NobleBlades" or text()="DankPyon_Schematic_MilitaryMaces" or text()="DankPyon_Schematic_NobleMaces" or text()="DankPyon_Schematic_MilitaryPolearms" or text()="DankPyon_Schematic_NoblePolearms" or text()="DankPyon_Schematic_Crossbow" or text()="DankPyon_Schematic_HeavyCrossbow" or text()="DankPyon_Schematic_Steel" or text()="DankPyon_Schematic_Gunpowder" or text()="DankPyon_Schematic_Tar" or text()="DankPyon_Schematic_GreatBow" or text()="DankPyon_Schematic_WarBow" or text()="DankPyon_Schematic_IntermediateCooking" or text()="DankPyon_Schematic_AdvancedCooking" or text()="DankPyon_Schematic_BallistaRepeater"]</xpath>
+				</li>
+
+				<!-- 3) Remove the schematic scroll ThingDefs themselves. -->
+				<li Class="PatchOperationRemove">
+					<xpath>/Defs/ThingDef[defName="DankPyon_Schematic_MilitaryBlades" or defName="DankPyon_Schematic_NobleBlades" or defName="DankPyon_Schematic_MilitaryMaces" or defName="DankPyon_Schematic_NobleMaces" or defName="DankPyon_Schematic_MilitaryPolearms" or defName="DankPyon_Schematic_NoblePolearms" or defName="DankPyon_Schematic_Crossbow" or defName="DankPyon_Schematic_HeavyCrossbow" or defName="DankPyon_Schematic_Steel" or defName="DankPyon_Schematic_Gunpowder" or defName="DankPyon_Schematic_Tar" or defName="DankPyon_Schematic_GreatBow" or defName="DankPyon_Schematic_WarBow" or defName="DankPyon_Schematic_IntermediateCooking" or defName="DankPyon_Schematic_AdvancedCooking" or defName="DankPyon_Schematic_BallistaRepeater"]</xpath>
+				</li>
+
+			</operations>
+		</match>
+	</Operation>
+
+</Patch>

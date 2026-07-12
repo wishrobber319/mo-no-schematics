@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ModMetaData>
+	<name>Medieval Overhaul - No Schematics</name>
+	<author>wishRobber</author>
+	<packageId>wishRobber.MONoSchematics</packageId>
+	<supportedVersions>
+		<li>1.6</li>
+	</supportedVersions>
+	<description>Removes the schematic requirement from Medieval Overhaul research projects and removes the ~16 research schematic scrolls from the game entirely.
+
+Standalone patch mod — does not modify Medieval Overhaul's own files. Load it AFTER Medieval Overhaul (and after any of its sub-patches such as Biotech). All changes are XML PatchOperations; safe to add to or remove from an existing save.
+
+Researches affected become freely researchable as soon as their normal prerequisites are met. The lore/quest scrolls (The Beginning, Into the Ruins, Ancient Codex) are left untouched.</description>
+	<modDependencies>
+		<li>
+			<packageId>DankPyon.Medieval.Overhaul</packageId>
+			<displayName>Medieval Overhaul</displayName>
+			<steamWorkshopUrl>steam://url/CommunityFilePage/3219596926</steamWorkshopUrl>
+		</li>
+	</modDependencies>
+	<loadAfter>
+		<li>DankPyon.Medieval.Overhaul</li>
+	</loadAfter>
+</ModMetaData>
