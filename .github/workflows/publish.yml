@@ -92,9 +92,11 @@ jobs:
           )"
           DESC="$(printf '%s' "$DESC" | sed 's/\\/\//g; s/"/'"'"'/g')"
 
-          # Workshop thumbnail (only if the mod has one).
-          PREVIEW=""
-          [ -f About/Preview.png ] && PREVIEW="$PWD/About/Preview.png"
+          # NOTE: the Workshop preview/thumbnail is intentionally NOT set here. steamcmd's
+          # workshop_build_item stores the preview in the (legacy) Steam Cloud and reliably fails with
+          # "Failed to update workshop item (Limit exceeded)". Set the preview once via the Steam web
+          # UI ("Add/edit images & videos") or the in-game RimWorld uploader instead. About/Preview.png
+          # is still shipped in the mod content, so RimWorld shows it in the in-game mod list.
 
           {
             echo '"workshopitem"'
@@ -102,7 +104,6 @@ jobs:
             echo '  "appid" "294100"'
             echo "  \"publishedfileid\" \"$ITEMID\""
             echo "  \"contentfolder\" \"$PWD/dist\""
-            [ -n "$PREVIEW" ] && printf '  "previewfile" "%s"\n' "$PREVIEW"
             printf '  "changenote" "%s"\n' "$NOTE"
             printf '  "description" "%s"\n' "$DESC"
             echo '}'
