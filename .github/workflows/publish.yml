@@ -79,6 +79,19 @@ jobs:
           fi
           ITEMID="$(tr -d '[:space:]' < About/PublishedFileId.txt)"
           NOTE="$(cat note.txt)"
+
+          # Steam description = the plain About.xml text + a clickable BBCode banner footer, templated
+          # per-repo. A banner is only appended if its image actually exists in Media/, so this is safe
+          # on mods that don't have banners yet. Sanitize quotes/backslashes for the VDF string.
+          BASE="$(python3 -c "import xml.etree.ElementTree as ET; print((ET.parse('About/About.xml').getroot().findtext('description') or '').strip())")"
+          RAW="https://raw.githubusercontent.com/$GITHUB_REPOSITORY/main/Media"
+          DESC="$(
+            printf '%s\n' "$BASE"
+            [ -f Media/github-banner.png ] && printf '\n[url=https://github.com/%s][img]%s/github-banner.png[/img][/url]\n' "$GITHUB_REPOSITORY" "$RAW"
+            [ -f Media/ko-fi-banner.png ]  && printf '[url=https://ko-fi.com/T7I6232BCO][img]%s/ko-fi-banner.png[/img][/url]\n' "$RAW"
+          )"
+          DESC="$(printf '%s' "$DESC" | sed 's/\\/\//g; s/"/'"'"'/g')"
+
           {
             echo '"workshopitem"'
             echo '{'
@@ -86,9 +99,11 @@ jobs:
             echo "  \"publishedfileid\" \"$ITEMID\""
             echo "  \"contentfolder\" \"$PWD/dist\""
             printf '  "changenote" "%s"\n' "$NOTE"
+            printf '  "description" "%s"\n' "$DESC"
             echo '}'
           } > item.vdf
           echo "Publishing item $ITEMID as v${{ steps.cn.outputs.version }}"
+          echo "----- description -----"; printf '%s\n' "$DESC"
 
       - name: Upload to Steam Workshop
         run: |
