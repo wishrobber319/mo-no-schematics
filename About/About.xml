@@ -2,7 +2,7 @@
 <ModMetaData>
 	<name>Medieval Overhaul - No Schematics</name>
 	<author>wishRobber</author>
-	<packageId>wishRobber.MONoSchematics</packageId>
+	<packageId>wishRobber.monoschematics</packageId>
 	<supportedVersions>
 		<li>1.6</li>
 	</supportedVersions>
