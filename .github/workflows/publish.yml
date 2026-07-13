@@ -12,7 +12,7 @@ on:
       - 'README.md'
       - '.gitignore'
       - '.github/**'
-      - 'Media/**'
+      - 'About/*-banner.png'
   workflow_dispatch:
 
 permissions:
@@ -72,7 +72,7 @@ jobs:
       - name: Stage, stamp Manifest, build VDF
         run: |
           mkdir -p dist
-          rsync -a --exclude Source --exclude .git --exclude .github --exclude Media \
+          rsync -a --exclude Source --exclude .git --exclude .github --exclude '*-banner.png' \
                 --exclude README.md --exclude .gitignore --exclude dist --exclude note.txt ./ dist/
           if [ -f dist/About/Manifest.xml ]; then
             sed -i -E "s#<version>[^<]*</version>#<version>${{ steps.cn.outputs.version }}</version>#" dist/About/Manifest.xml
@@ -81,14 +81,15 @@ jobs:
           NOTE="$(cat note.txt)"
 
           # Steam description = the plain About.xml text + a clickable BBCode banner footer, templated
-          # per-repo. A banner is only appended if its image actually exists in Media/, so this is safe
+          # per-repo. A banner is only appended if its image actually exists in About/, so this is safe
           # on mods that don't have banners yet. Sanitize quotes/backslashes for the VDF string.
           BASE="$(python3 -c "import xml.etree.ElementTree as ET; print((ET.parse('About/About.xml').getroot().findtext('description') or '').strip())")"
-          RAW="https://raw.githubusercontent.com/$GITHUB_REPOSITORY/main/Media"
+          RAW="https://raw.githubusercontent.com/$GITHUB_REPOSITORY/main/About"
           DESC="$(
             printf '%s\n' "$BASE"
-            [ -f Media/github-banner.png ] && printf '\n[url=https://github.com/%s][img]%s/github-banner.png[/img][/url]\n' "$GITHUB_REPOSITORY" "$RAW"
-            [ -f Media/ko-fi-banner.png ]  && printf '[url=https://ko-fi.com/T7I6232BCO][img]%s/ko-fi-banner.png[/img][/url]\n' "$RAW"
+            [ -f About/collection-banner.png ] && printf '\n[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3763500997][img]%s/collection-banner.png[/img][/url]\n' "$RAW"
+            [ -f About/ko-fi-banner.png ]  && printf '[url=https://ko-fi.com/T7I6232BCO][img]%s/ko-fi-banner.png[/img][/url]\n' "$RAW"
+            [ -f About/github-banner.png ] && printf '[url=https://github.com/%s][img]%s/github-banner.png[/img][/url]\n' "$GITHUB_REPOSITORY" "$RAW"
           )"
           DESC="$(printf '%s' "$DESC" | sed 's/\\/\//g; s/"/'"'"'/g')"
 
