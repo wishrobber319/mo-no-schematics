@@ -6,7 +6,7 @@
 	<supportedVersions>
 		<li>1.6</li>
 	</supportedVersions>
-	<description>Removes the schematic requirement from Medieval Overhaul research projects.</description>
+	<description>Tired of tracking down schematics just to unlock new tech in Medieval Overhaul? This lightweight patch removes the schematic requirement from Medieval Overhaul's research projects, so you can unlock its medieval workbenches, weapons, armor, and structures straight from the normal research tree — no schematic hunting required. A simple quality-of-life tweak for a smoother Medieval Overhaul playthrough.</description>
 	<modDependencies>
 		<li>
 			<packageId>DankPyon.Medieval.Overhaul</packageId>
