@@ -1,0 +1,9 @@
+[b]Unlock tech without hunting schematics.[/b] Tired of tracking down schematics just to progress in Medieval Overhaul? This removes the schematic requirement from its research, so you unlock everything straight from the normal research tree.
+
+[hr][/hr]
+[b]What's inside[/b]
+[list]
+[*][b]No schematic gate.[/b] Medieval Overhaul's workbenches, weapons, armor and structures unlock from research alone.
+[*][b]Straight from the tree.[/b] No more searching the map for schematics.
+[*][b]Requires Medieval Overhaul.[/b]
+[/list]
